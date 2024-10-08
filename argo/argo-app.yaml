@@ -1,0 +1,40 @@
+apiVersion: aureaimaging.com/v1
+kind: TMSApplicationSet
+metadata:
+  name: tms-app-multi-cluster
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: tms-device
+              operator: Exists
+  template:
+    metadata:
+      name: tms-app-{{name}}
+      labels:
+        apps.open-cluster-management.io/pull-to-ocm-managed-cluster: 'true'
+      annotations:
+        argocd.argoproj.io/skip-reconcile: 'true'
+        apps.open-cluster-management.io/ocm-managed-cluster: '{{name}}'
+        apps.open-cluster-management.io/ocm-managed-cluster-app-namespace: argocd
+    spec:
+      project: default
+      sources:
+      - repoURL: "https://chartmuseum.dev.aureaimaging.com"
+        targetRevision: 0.2.124
+        chart: tms-app
+        helm:
+          valueFiles:
+            - ./values/shared-values.yaml
+            - ./values/device-configs/values-{{name}}.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: tms-app
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

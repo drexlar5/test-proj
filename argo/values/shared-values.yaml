@@ -1,0 +1,22 @@
+hardwareModel: '{{metadata.labels.model}}'
+comms:
+  imageStream:
+    hostPath: /image_stream_temp_data
+dataGathering:
+  hostOutputPath: /data_gathering
+rabbitmq:
+  auth:
+    username: ''
+    password: ''
+    erlangCookie: ''
+  resources:
+    requests:
+      cpu: 200m
+      memory: 500Mi
+  ingress:
+    enabled: true
+    hostname: rabbitmq.tms.local
+  persistence:
+    size: 5Gi
+iotCore:
+  thingName: '{{metadata.labels.tms-device}}'

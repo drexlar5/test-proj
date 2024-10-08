@@ -1,0 +1,5 @@
+detectionPipeline:
+  tmsID: ""
+iotCore:
+  thingCert: ""
+  privateKey: ""
