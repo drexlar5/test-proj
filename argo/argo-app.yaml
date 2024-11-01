@@ -1,5 +1,5 @@
 apiVersion: aureaimaging.com/v1
-kind: TMSApplicationSet
+kind: EdgeApplicationSet
 metadata:
   name: tms-app-multi-cluster
   namespace: argocd
